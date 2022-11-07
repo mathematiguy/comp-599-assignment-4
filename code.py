@@ -11,6 +11,7 @@ import transformers
 
 # ######################## PART 1: PROVIDED CODE ########################
 
+
 def load_datasets(data_directory: str) -> Union[dict, dict]:
     """
     Reads the training and validation splits from disk and load
@@ -20,7 +21,7 @@ def load_datasets(data_directory: str) -> Union[dict, dict]:
     ----------
     data_directory: str
         The directory where the data is stored.
-    
+
     Returns
     -------
     train: dict
@@ -115,9 +116,10 @@ class CustomDistilBert(nn.Module):
 
     def get_sigmoid(self):
         return self.sigmoid
-    
+
     def get_criterion(self):
         return self.criterion
+
     # ^^^^^ DO NOT CHANGE ABOVE THIS LINE ^^^^^
 
     def assign_optimizer(self, **kwargs):
@@ -162,9 +164,9 @@ class SoftPrompting(nn.Module):
         super().__init__()
         self.p = p
         self.e = e
-        
+
         self.prompts = torch.randn((p, e), requires_grad=True)
-        
+
     def forward(self, embedded):
         # TODO: your work below
         pass
@@ -172,34 +174,41 @@ class SoftPrompting(nn.Module):
 
 # ######################## PART 3: YOUR WORK HERE ########################
 
-def load_models_and_tokenizer(q_name, a_name, t_name, device='cpu'):
+
+def load_models_and_tokenizer(q_name, a_name, t_name, device="cpu"):
     # TODO: your work below
     pass
     # return q_enc, a_enc, tokenizer
-    
 
-def tokenize_qa_batch(tokenizer, q_titles, q_bodies, answers, max_length=64) -> transformers.BatchEncoding:
+
+def tokenize_qa_batch(
+    tokenizer, q_titles, q_bodies, answers, max_length=64
+) -> transformers.BatchEncoding:
     # TODO: your work below.
     pass
-    
+
     # return q_batch, a_batch
+
 
 def get_class_output(model, batch):
     # Since this is similar to a previous question, it is left ungraded
     # TODO: your work below.
     pass
 
-def inbatch_negative_sampling(Q: Tensor, P: Tensor, device: str = 'cpu') -> Tensor:
+
+def inbatch_negative_sampling(Q: Tensor, P: Tensor, device: str = "cpu") -> Tensor:
     # TODO: your work below
     pass
-    
+
     # return S
 
-def contrastive_loss_criterion(S: Tensor, labels: Tensor = None, device: str = 'cpu'):
+
+def contrastive_loss_criterion(S: Tensor, labels: Tensor = None, device: str = "cpu"):
     # TODO: your work below
     pass
-    
+
     # return loss
+
 
 def get_topk_indices(Q, P, k: int = None):
     # TODO: your work below
@@ -207,34 +216,39 @@ def get_topk_indices(Q, P, k: int = None):
 
     # return indices, scores
 
-def select_by_indices(indices: Tensor, passages: 'list[str]') -> 'list[str]':
+
+def select_by_indices(indices: Tensor, passages: "list[str]") -> "list[str]":
     # TODO: your work below
     pass
 
 
-def embed_passages(passages: 'list[str]', model, tokenizer, device='cpu', max_length=512):
+def embed_passages(
+    passages: "list[str]", model, tokenizer, device="cpu", max_length=512
+):
     # TODO: your work below
     pass
 
 
-def embed_questions(titles, bodies, model, tokenizer, device='cpu', max_length=512):
+def embed_questions(titles, bodies, model, tokenizer, device="cpu", max_length=512):
     # TODO: your work below
     pass
 
 
-def recall_at_k(retrieved_indices: 'list[list[int]]', true_indices: 'list[int]', k: int):
+def recall_at_k(
+    retrieved_indices: "list[list[int]]", true_indices: "list[int]", k: int
+):
     # TODO: your work below
     pass
 
 
-def mean_reciprocal_rank(retrieved_indices: 'list[list[int]]', true_indices: 'list[int]'):
+def mean_reciprocal_rank(
+    retrieved_indices: "list[list[int]]", true_indices: "list[int]"
+):
     # TODO: your work below
     pass
 
 
 # ######################## PART 4: YOUR WORK HERE ########################
-
-
 
 
 if __name__ == "__main__":
@@ -267,7 +281,7 @@ if __name__ == "__main__":
         + valid_raw["premise"]
         + valid_raw["hypothesis"]
     )
-    
+
     print("=" * 80)
     print("Running test code for part 1")
     print("-" * 80)
@@ -295,9 +309,13 @@ if __name__ == "__main__":
         print()
 
     # ###################### PART 2: TEST CODE ######################
-    freeze_params(model.get_distilbert()) # Now, model should have no trainable parameters
+    freeze_params(
+        model.get_distilbert()
+    )  # Now, model should have no trainable parameters
 
-    sp = SoftPrompting(p=5, e=model.get_distilbert().embeddings.word_embeddings.embedding_dim)
+    sp = SoftPrompting(
+        p=5, e=model.get_distilbert().embeddings.word_embeddings.embedding_dim
+    )
     batch = model.tokenize(
         ["This is a premise.", "This is another premise."],
         ["This is a hypothesis.", "This is another hypothesis."],
@@ -309,19 +327,20 @@ if __name__ == "__main__":
     # Preliminary
     bsize = 8
     qa_data = dict(
-        train = pd.read_csv('data/qa/train.csv'),
-        valid = pd.read_csv('data/qa/validation.csv'),
-        answers = pd.read_csv('data/qa/answers.csv'),
+        train=pd.read_csv("data/qa/train.csv"),
+        valid=pd.read_csv("data/qa/validation.csv"),
+        answers=pd.read_csv("data/qa/answers.csv"),
     )
 
-    q_titles = qa_data['train'].loc[:bsize-1, 'QuestionTitle'].tolist()
-    q_bodies = qa_data['train'].loc[:bsize-1, 'QuestionBody'].tolist()
-    answers = qa_data['train'].loc[:bsize-1, 'Answer'].tolist()
+    q_titles = qa_data["train"].loc[: bsize - 1, "QuestionTitle"].tolist()
+    q_bodies = qa_data["train"].loc[: bsize - 1, "QuestionBody"].tolist()
+    answers = qa_data["train"].loc[: bsize - 1, "Answer"].tolist()
 
-    # Loading huggingface models and tokenizers    
-    name = 'google/electra-small-discriminator'
-    q_enc, a_enc, tokenizer = load_models_and_tokenizer(q_name=name, a_name=name, t_name=name)
-    
+    # Loading huggingface models and tokenizers
+    name = "google/electra-small-discriminator"
+    q_enc, a_enc, tokenizer = load_models_and_tokenizer(
+        q_name=name, a_name=name, t_name=name
+    )
 
     # Tokenize batch and get class output
     q_batch, a_batch = tokenize_qa_batch(tokenizer, q_titles, q_bodies, answers)
