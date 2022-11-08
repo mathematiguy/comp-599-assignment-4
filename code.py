@@ -151,12 +151,13 @@ class CustomDistilBert(nn.Module):
         truncation: bool = True,
         padding: bool = True,
     ):
+        tokenizer = self.get_tokenizer()
         kwargs = dict(max_length=max_length, truncation=truncation, padding=padding)
         premise_tokens = [
-            self.tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise
+            tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise
         ]
         hypothesis_tokens = [
-            self.tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in hypothesis
+            tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in hypothesis
         ]
 
         tokens = premise_tokens + hypothesis_tokens
@@ -173,8 +174,10 @@ class CustomDistilBert(nn.Module):
         return BatchEncoding(tokens)
 
     def forward(self, inputs: transformers.BatchEncoding):
-        # TODO: your work below
-        pass
+        outputs = self.distilbert(**inputs)
+        preds = self.pred_layer(outputs.last_hidden_state)
+        probs = self.sigmoid(preds)
+        return probs
 
 
 # ######################## PART 2: YOUR WORK HERE ########################
