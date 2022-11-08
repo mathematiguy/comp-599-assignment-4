@@ -3,12 +3,15 @@ GIT_TAG ?= $(shell git log --oneline | head -n1 | awk '{print $$1}')
 DOCKER_REGISTRY := mathematiguy
 IMAGE := $(DOCKER_REGISTRY)/$(REPO_NAME)
 HAS_DOCKER ?= $(shell which docker)
-RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
+RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) --gpus all --ipc host -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
 UID ?= user
 GID ?= user
 DOCKER_ARGS ?=
 
 .PHONY: docker docker-push docker-pull enter enter-root
+
+test:
+	$(RUN) pytest
 
 JUPYTER_PASSWORD ?= jupyter
 JUPYTER_PORT ?= 8888

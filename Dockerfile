@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt update
@@ -42,3 +42,6 @@ COPY a4 /code/a4
 COPY setup.py /code
 RUN python${PYTHON_VERSION} -m pip install -e /code
 ENV PYTHONPATH="/code:${PYTHONPATH}"
+
+# Set env variables
+ENV HF_DATASETS_CACHE /home/user/.cache

@@ -13,3 +13,5 @@ ipywidgets==8.0.2
 iprogress==0.4
 click
 seaborn
+pytest
+transformers
