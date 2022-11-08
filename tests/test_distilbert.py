@@ -24,4 +24,3 @@ def test_distilbert_forward():
     hypotheses = ["There is something on my head", "Triangles are not a shape"]
     encoding = bert.tokenize(premises, hypotheses)
     probs = bert.forward(encoding)
-    

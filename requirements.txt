@@ -15,3 +15,4 @@ click
 seaborn
 pytest
 transformers
+scikit-learn

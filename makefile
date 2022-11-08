@@ -18,6 +18,9 @@ RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) $(GPU_FLAGS) -it --rm -v $$
 
 .PHONY: docker docker-push docker-pull enter enter-root
 
+run: code.py
+	$(RUN) python $<
+
 test:
 	$(RUN) pytest
 
