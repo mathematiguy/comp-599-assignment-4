@@ -154,14 +154,12 @@ class CustomDistilBert(nn.Module):
     ):
         tokenizer = self.get_tokenizer()
         kwargs = dict(max_length=max_length, truncation=truncation, padding=padding)
-        premise_tokens = [
-            tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise
-        ]
-        hypothesis_tokens = [
-            tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in hypothesis
-        ]
 
-        tokens = premise_tokens + hypothesis_tokens
+        examples = [f'{tokenizer.cls_token} {prem} {tokenizer.sep_token} {hyp}' for prem, hyp in zip(premise, hypothesis)]
+
+        tokens = [
+            tokenizer(ex, return_tensors="pt", **kwargs) for ex in examples
+        ]
 
         tokens = {
             "input_ids": pad_sequence(
