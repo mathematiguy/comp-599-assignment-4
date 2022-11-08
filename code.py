@@ -149,8 +149,8 @@ class CustomDistilBert(nn.Module):
         tokens = premise_tokens + hypothesis_tokens
 
         tokens = {
-            'input_ids': [d['input_ids'] for d in tokens],
-            'attention_mask': [d['attention_mask'] for d in tokens]
+            'input_ids': torch.concat([d['input_ids'] for d in tokens]),
+            'attention_mask': torch.concat([d['attention_mask'] for d in tokens])
         }
 
         return BatchEncoding(tokens)
