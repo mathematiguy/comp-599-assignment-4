@@ -10,7 +10,12 @@ from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 import transformers
-from transformers import DistilBertConfig, DistilBertModel, DistilBertTokenizer, BatchEncoding
+from transformers import (
+    DistilBertConfig,
+    DistilBertModel,
+    DistilBertTokenizer,
+    BatchEncoding,
+)
 
 # ######################## PART 1: PROVIDED CODE ########################
 
@@ -105,7 +110,9 @@ class CustomDistilBert(nn.Module):
         super().__init__()
 
         self.config = DistilBertConfig()
-        self.distilbert = DistilBertModel(config=self.config).from_pretrained("distilbert-base-uncased")
+        self.distilbert = DistilBertModel(config=self.config).from_pretrained(
+            "distilbert-base-uncased"
+        )
         self.tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
         self.sigmoid = nn.Sigmoid()
         self.pred_layer = nn.Linear(self.config.dim, 1)
@@ -145,14 +152,22 @@ class CustomDistilBert(nn.Module):
         padding: bool = True,
     ):
         kwargs = dict(max_length=max_length, truncation=truncation, padding=padding)
-        premise_tokens = [self.tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise]
-        hypothesis_tokens = [self.tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in premise]
+        premise_tokens = [
+            self.tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise
+        ]
+        hypothesis_tokens = [
+            self.tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in hypothesis
+        ]
 
-        tokens = premise_tokens + hypothesis_tokens
+        tokens = hypothesis_tokens + premise_tokens
 
         tokens = {
-            'input_ids': pad_sequence([d['input_ids'].flatten() for d in tokens], batch_first=True),
-            'attention_mask': pad_sequence([d['attention_mask'].flatten() for d in tokens], batch_first=True)
+            "input_ids": pad_sequence(
+                [d["input_ids"].flatten() for d in tokens], batch_first=True
+            ),
+            "attention_mask": pad_sequence(
+                [d["attention_mask"].flatten() for d in tokens], batch_first=True
+            ),
         }
 
         return BatchEncoding(tokens)
