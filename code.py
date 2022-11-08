@@ -159,7 +159,7 @@ class CustomDistilBert(nn.Module):
             self.tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in hypothesis
         ]
 
-        tokens = hypothesis_tokens + premise_tokens
+        tokens = premise_tokens + hypothesis_tokens
 
         tokens = {
             "input_ids": pad_sequence(
