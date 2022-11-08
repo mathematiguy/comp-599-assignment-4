@@ -1,12 +1,20 @@
 REPO_NAME := $(shell basename `git rev-parse --show-toplevel` | tr '[:upper:]' '[:lower:]')
 GIT_TAG ?= $(shell git log --oneline | head -n1 | awk '{print $$1}')
+COMPUTE ?= cpu
 DOCKER_REGISTRY := mathematiguy
-IMAGE := $(DOCKER_REGISTRY)/$(REPO_NAME)
+IMAGE := $(DOCKER_REGISTRY)/$(REPO_NAME)-$(COMPUTE)
 HAS_DOCKER ?= $(shell which docker)
-RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) --gpus all --ipc host -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
 UID ?= user
 GID ?= user
 DOCKER_ARGS ?=
+
+ifeq ($(COMPUTE),gpu)
+	GPU_FLAGS=--gpus all --ipc host
+else
+	GPU_FLAGS=
+endif
+
+RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) $(GPU_FLAGS) -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
 
 .PHONY: docker docker-push docker-pull enter enter-root
 
@@ -26,7 +34,7 @@ jupyter:
 			"from notebook.auth import passwd; print(passwd('$(JUPYTER_PASSWORD)', 'sha1'))")"
 
 docker:
-	docker build $(DOCKER_ARGS) --tag $(IMAGE):$(GIT_TAG) .
+	docker build $(DOCKER_ARGS) --tag $(IMAGE):$(GIT_TAG) . -f Dockerfile.$(COMPUTE)
 	docker tag $(IMAGE):$(GIT_TAG) $(IMAGE):latest
 
 docker-push:
