@@ -175,7 +175,8 @@ class CustomDistilBert(nn.Module):
 
     def forward(self, inputs: transformers.BatchEncoding):
         outputs = self.distilbert(**inputs)
-        preds = self.pred_layer(outputs.last_hidden_state)
+        state = self.slice_cls_hidden_state(outputs)
+        preds = self.pred_layer(state)
         probs = self.sigmoid(preds)
         return probs
 
