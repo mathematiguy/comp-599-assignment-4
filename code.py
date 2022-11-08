@@ -178,7 +178,7 @@ class CustomDistilBert(nn.Module):
         state = self.slice_cls_hidden_state(outputs)
         preds = self.pred_layer(state)
         probs = self.sigmoid(preds)
-        return probs
+        return probs.flatten()
 
 
 # ######################## PART 2: YOUR WORK HERE ########################
