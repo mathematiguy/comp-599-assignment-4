@@ -5,6 +5,8 @@ import torch
 from torch import Tensor, optim
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.nn.utils.rnn import pad_sequence
+
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 import transformers
@@ -149,13 +151,14 @@ class CustomDistilBert(nn.Module):
         tokens = premise_tokens + hypothesis_tokens
 
         tokens = {
-            'input_ids': torch.concat([d['input_ids'] for d in tokens]),
-            'attention_mask': torch.concat([d['attention_mask'] for d in tokens])
+            'input_ids': pad_sequence([d['input_ids'].flatten() for d in tokens], batch_first=True),
+            'attention_mask': pad_sequence([d['attention_mask'].flatten() for d in tokens], batch_first=True)
         }
 
         return BatchEncoding(tokens)
 
     def forward(self, inputs: transformers.BatchEncoding):
+        # TODO: your work below
         pass
 
 
