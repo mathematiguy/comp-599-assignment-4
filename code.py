@@ -160,7 +160,7 @@ class CustomDistilBert(nn.Module):
 
         examples = [' '.join([prem, sep, hyp]) for prem, hyp in zip(premise, hypothesis)]
         tokens = [
-            tokenizer(ex, return_tensors="pt", **kwargs) for ex in example
+            tokenizer(ex, return_tensors="pt", **kwargs) for ex in examples
         ]
 
         tokens = {
