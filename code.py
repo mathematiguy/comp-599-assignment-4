@@ -126,9 +126,8 @@ class CustomDistilBert(nn.Module):
         return self.criterion
 
     # ^^^^^ DO NOT CHANGE ABOVE THIS LINE ^^^^^
-
     def assign_optimizer(self, **kwargs):
-        return optim.Adam(self.distilbert.parameters(), **kwargs)
+        return optim.Adam(self.parameters(), **kwargs)
 
     def slice_cls_hidden_state(
         self, x: transformers.modeling_outputs.BaseModelOutput
