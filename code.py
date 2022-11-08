@@ -146,10 +146,16 @@ class CustomDistilBert(nn.Module):
         premise_tokens = [self.tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise]
         hypothesis_tokens = [self.tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in premise]
 
-        return BatchEncoding(premise_tokens + hypothesis_tokens)
+        tokens = premise_tokens + hypothesis_tokens
+
+        tokens = {
+            'input_ids': [d['input_ids'] for d in tokens],
+            'attention_mask': [d['attention_mask'] for d in tokens]
+        }
+
+        return BatchEncoding(tokens)
 
     def forward(self, inputs: transformers.BatchEncoding):
-        # TODO: your work below
         pass
 
 
