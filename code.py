@@ -132,8 +132,7 @@ class CustomDistilBert(nn.Module):
     def slice_cls_hidden_state(
         self, x: transformers.modeling_outputs.BaseModelOutput
     ) -> torch.Tensor:
-        # TODO: your work below
-        pass
+        return x.last_hidden_state[:, 0, :]
 
     def tokenize(
         self,
