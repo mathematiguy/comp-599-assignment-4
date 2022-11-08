@@ -158,8 +158,9 @@ class CustomDistilBert(nn.Module):
         kwargs = dict(max_length=max_length, truncation=truncation, padding=padding)
         tok = lambda x: tokenizer(x, return_tensors="pt", **kwargs)
 
+        examples = [' '.join([prem, sep, hyp]) for prem, hyp in zip(premise, hypothesis)]
         tokens = [
-            tokenizer(f"{prem} {sep} {hyp}", return_tensors="pt", **kwargs) for prem, hyp in zip(premise, hypothesis)
+            tokenizer(ex, return_tensors="pt", **kwargs) for ex in example
         ]
 
         tokens = {
