@@ -2,7 +2,7 @@ import random
 from typing import Union
 
 import torch
-from torch import Tensor
+from torch import Tensor, optim
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
@@ -128,8 +128,7 @@ class CustomDistilBert(nn.Module):
     # ^^^^^ DO NOT CHANGE ABOVE THIS LINE ^^^^^
 
     def assign_optimizer(self, **kwargs):
-        # TODO: your work below
-        pass
+        return optim.Adam(self.distilbert.parameters(), **kwargs)
 
     def slice_cls_hidden_state(
         self, x: transformers.modeling_outputs.BaseModelOutput
