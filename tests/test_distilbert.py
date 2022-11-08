@@ -11,6 +11,6 @@ def test_distilbert_slice_cls_hidden_state():
     bert.slice_cls_hidden_state(outputs)
 
 def test_distilbert_tokenize():
-    premise = ["I am wearing a hat"]
-    hypothesis = ["There is something on my head"]
-    bert.tokenize(premise, hypothesis)
+    premises = ["I am wearing a hat", "Triangles are a shape"]
+    hypotheses = ["There is something on my head", "Triangles are not a shape"]
+    bert.tokenize(premises, hypotheses)
