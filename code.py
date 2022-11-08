@@ -95,14 +95,19 @@ def eval_distilbert(model, loader, device):
 
     return torch.cat(preds), torch.cat(targets)
 
+from transformers import DistilBertConfig, DistilBertModel, DistilBertTokenizer
 
 # ######################## PART 1: YOUR WORK STARTS HERE ########################
 class CustomDistilBert(nn.Module):
     def __init__(self):
         super().__init__()
 
-        # TODO: your work below
-        pass
+        self.config = DistilBertConfig()
+        self.distilbert = DistilBertModel(config=self.config).from_pretrained("distilbert-base-uncased")
+        self.tokenizer = DistilBertTokenizer.from_pretrained("distilbert-base-uncased")
+        self.sigmoid = nn.Sigmoid()
+        self.pred_layer = nn.Linear(self.config.dim, 1)
+        self.criterion = nn.BCELoss()
 
     # vvvvv DO NOT CHANGE BELOW THIS LINE vvvvv
     def get_distilbert(self):
