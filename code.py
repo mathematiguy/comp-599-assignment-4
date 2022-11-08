@@ -8,6 +8,7 @@ import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 import transformers
+from transformers import DistilBertConfig, DistilBertModel, DistilBertTokenizer, BatchEncoding
 
 # ######################## PART 1: PROVIDED CODE ########################
 
@@ -95,7 +96,6 @@ def eval_distilbert(model, loader, device):
 
     return torch.cat(preds), torch.cat(targets)
 
-from transformers import DistilBertConfig, DistilBertModel, DistilBertTokenizer
 
 # ######################## PART 1: YOUR WORK STARTS HERE ########################
 class CustomDistilBert(nn.Module):
@@ -142,8 +142,11 @@ class CustomDistilBert(nn.Module):
         truncation: bool = True,
         padding: bool = True,
     ):
-        # TODO: your work below
-        pass
+        kwargs = dict(max_length=max_length, truncation=truncation, padding=padding)
+        premise_tokens = [self.tokenizer(prem, return_tensors="pt", **kwargs) for prem in premise]
+        hypothesis_tokens = [self.tokenizer(hyp, return_tensors="pt", **kwargs) for hyp in premise]
+
+        return BatchEncoding({'premise': premise_tokens, 'hypothesis': hypothesis_tokens})
 
     def forward(self, inputs: transformers.BatchEncoding):
         # TODO: your work below
