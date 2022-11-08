@@ -153,9 +153,11 @@ class CustomDistilBert(nn.Module):
         padding: bool = True,
     ):
         tokenizer = self.get_tokenizer()
+        sep = tokenizer.sep_token
+        cls = tokenizer.cls_token
         kwargs = dict(max_length=max_length, truncation=truncation, padding=padding)
 
-        examples = [f'{tokenizer.cls_token} {prem} {tokenizer.sep_token} {hyp}' for prem, hyp in zip(premise, hypothesis)]
+        examples = [f'{cls} {prem} {sep} {hyp} {sep}' for prem, hyp in zip(premise, hypothesis)]
 
         tokens = [
             tokenizer(ex, return_tensors="pt", **kwargs) for ex in examples
