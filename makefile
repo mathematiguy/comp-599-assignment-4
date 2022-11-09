@@ -1,6 +1,6 @@
 REPO_NAME := $(shell basename `git rev-parse --show-toplevel` | tr '[:upper:]' '[:lower:]')
 GIT_TAG ?= $(shell git log --oneline | head -n1 | awk '{print $$1}')
-COMPUTE ?= cpu
+COMPUTE ?= gpu
 DOCKER_REGISTRY := mathematiguy
 IMAGE := $(DOCKER_REGISTRY)/$(REPO_NAME)-$(COMPUTE)
 HAS_DOCKER ?= $(shell which docker)
