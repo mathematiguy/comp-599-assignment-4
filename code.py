@@ -353,7 +353,8 @@ if __name__ == "__main__":
     batch = model.tokenize(
         ["This is a premise.", "This is another premise."],
         ["This is a hypothesis.", "This is another hypothesis."],
-    )
+    ).to(device)
+
     batch.input_embedded = sp(model.get_distilbert().embeddings(batch.input_ids))
     batch.attention_mask = pad_attention_mask(batch.attention_mask, 5)
 
