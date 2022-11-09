@@ -9,12 +9,12 @@ GID ?= user
 DOCKER_ARGS ?=
 
 ifeq ($(COMPUTE),gpu)
-	GPU_FLAGS=--gpus all --ipc host
+	GPU_FLAGS=--gpus all
 else
 	GPU_FLAGS=
 endif
 
-RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) $(GPU_FLAGS) -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
+RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) $(GPU_FLAGS) --ipc host -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
 
 .PHONY: docker docker-push docker-pull enter enter-root
 
