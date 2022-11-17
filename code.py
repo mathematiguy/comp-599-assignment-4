@@ -221,10 +221,19 @@ def load_models_and_tokenizer(q_name, a_name, t_name, device="cpu"):
 def tokenize_qa_batch(
     tokenizer, q_titles, q_bodies, answers, max_length=64
 ) -> transformers.BatchEncoding:
-    # TODO: your work below.
-    pass
 
-    # return q_batch, a_batch
+    # Add [SEP] tokens between title + body
+    qs = [f'{q_title} [SEP] {q_body}' for q_title, q_body in zip(q_titles, q_bodies)]
+
+    # Tokenize text with padding and truncation
+    q_tokens = tokenizer(qs, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True)
+    a_tokens = tokenizer(answers, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True)
+
+    # Create batch objects
+    q_batch = BatchEncoding(q_tokens)
+    a_batch = BatchEncoding(a_tokens)
+
+    return q_batch, a_batch
 
 
 def get_class_output(model, batch):
