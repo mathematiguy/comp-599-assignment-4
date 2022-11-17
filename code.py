@@ -223,7 +223,7 @@ def tokenize_qa_batch(
 ) -> transformers.BatchEncoding:
 
     # Tokenize text with padding and truncation
-    q_tokens = tokenizer(q_title, q_bodies, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
+    q_tokens = tokenizer(q_titles, q_bodies, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
     a_tokens = tokenizer(answers, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
 
     # Create batch objects
