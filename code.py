@@ -239,10 +239,8 @@ def get_class_output(model, batch):
 
 
 def inbatch_negative_sampling(Q: Tensor, P: Tensor, device: str = "cpu") -> Tensor:
-    # TODO: your work below
-    pass
-
-    # return S
+    S = torch.matmul(Q, P.t())
+    return S
 
 
 def contrastive_loss_criterion(S: Tensor, labels: Tensor = None, device: str = "cpu"):
