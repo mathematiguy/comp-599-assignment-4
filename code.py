@@ -234,9 +234,8 @@ def tokenize_qa_batch(
 
 
 def get_class_output(model, batch):
-    # Since this is similar to a previous question, it is left ungraded
-    # TODO: your work below.
-    pass
+    output = model(batch["input_ids"])['last_hidden_state']
+    return output[:,0,:]
 
 
 def inbatch_negative_sampling(Q: Tensor, P: Tensor, device: str = "cpu") -> Tensor:
