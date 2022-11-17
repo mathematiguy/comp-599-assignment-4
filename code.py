@@ -226,8 +226,8 @@ def tokenize_qa_batch(
     qs = [f'{q_title} [SEP] {q_body}' for q_title, q_body in zip(q_titles, q_bodies)]
 
     # Tokenize text with padding and truncation
-    q_tokens = tokenizer(qs, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True)
-    a_tokens = tokenizer(answers, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True)
+    q_tokens = tokenizer(qs, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
+    a_tokens = tokenizer(answers, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
 
     # Create batch objects
     q_batch = BatchEncoding(q_tokens)
