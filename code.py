@@ -204,9 +204,8 @@ class SoftPrompting(nn.Module):
         self.prompts = torch.randn((p, e), requires_grad=True)
 
     def forward(self, embedded):
-        # TODO: your work below
-        pass
-
+        batched_prompts = self.prompts.repeat(embedded.shape[0], 1, 1).to(device)
+        return torch.cat((batched_prompts, embedded), 1)
 
 # ######################## PART 3: YOUR WORK HERE ########################
 
