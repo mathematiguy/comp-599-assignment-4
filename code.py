@@ -211,9 +211,11 @@ class SoftPrompting(nn.Module):
 
 
 def load_models_and_tokenizer(q_name, a_name, t_name, device="cpu"):
-    # TODO: your work below
-    pass
-    # return q_enc, a_enc, tokenizer
+    from transformers import ElectraForPreTraining, ElectraTokenizerFast
+    q_enc = ElectraForPreTraining.from_pretrained(q_name)
+    a_enc = ElectraForPreTraining.from_pretrained(a_name)
+    tokenizer = ElectraTokenizerFast.from_pretrained(t_name)
+    return q_enc, a_enc, tokenizer
 
 
 def tokenize_qa_batch(
