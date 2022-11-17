@@ -22,7 +22,7 @@ run: code.py
 	$(RUN) python $<
 
 test:
-	$(RUN) pytest
+	$(RUN) pytest -v
 
 JUPYTER_PASSWORD ?= jupyter
 JUPYTER_PORT ?= 8888
