@@ -184,8 +184,9 @@ class CustomDistilBert(nn.Module):
 
 # ######################## PART 2: YOUR WORK HERE ########################
 def freeze_params(model):
-    # TODO: your work below
-    pass
+    for p in model.parameters():
+        p.requires_grad = False
+    return model
 
 
 def pad_attention_mask(mask, p):
