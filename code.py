@@ -190,8 +190,9 @@ def freeze_params(model):
 
 
 def pad_attention_mask(mask, p):
-    # TODO: your work below
-    pass
+    batch_size, seq_length = mask.shape
+    pad = torch.ones((batch_size, p), dtype=torch.int64, device=mask.device)
+    return torch.cat((pad, mask), 1)
 
 
 class SoftPrompting(nn.Module):
