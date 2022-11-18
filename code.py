@@ -259,8 +259,7 @@ def get_topk_indices(Q, P, k: int = None):
 
 
 def select_by_indices(indices: Tensor, passages: "list[str]") -> "list[str]":
-    # TODO: your work below
-    pass
+    return [[passages[i] for i in row] for row in indices.tolist()]
 
 
 def embed_passages(
