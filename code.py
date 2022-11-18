@@ -265,13 +265,13 @@ def select_by_indices(indices: Tensor, passages: "list[str]") -> "list[str]":
 def embed_passages(
     passages: "list[str]", model, tokenizer, device="cpu", max_length=512
 ):
-    # TODO: your work below
-    pass
+    tokens = tokenizer(passages, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
+    return get_class_output(model, tokens)
 
 
 def embed_questions(titles, bodies, model, tokenizer, device="cpu", max_length=512):
-    # TODO: your work below
-    pass
+    tokens = tokenizer(titles, bodies, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
+    return get_class_output(model, tokens)
 
 
 def recall_at_k(
