@@ -278,8 +278,7 @@ def embed_questions(titles, bodies, model, tokenizer, device="cpu", max_length=5
 def recall_at_k(
     retrieved_indices: "list[list[int]]", true_indices: "list[int]", k: int
 ):
-    # TODO: your work below
-    pass
+    return [1/k if i in retrieved else 0 for i, retrieved in zip(true_indices, retrieved_indices)]
 
 
 def mean_reciprocal_rank(
