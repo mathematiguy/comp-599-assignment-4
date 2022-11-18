@@ -14,7 +14,7 @@ else
 	GPU_FLAGS=
 endif
 
-RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) $(GPU_FLAGS) --ipc host -it --rm -v $$(pwd):/code -w /code -u $(UID):$(GID) $(IMAGE))
+RUN ?= $(if $(HAS_DOCKER), docker run $(DOCKER_ARGS) $(GPU_FLAGS) --ipc host -it --rm -v $$(pwd):/home/user -w /home/user -u $(UID):$(GID) $(IMAGE))
 
 .PHONY: docker docker-push docker-pull enter enter-root
 

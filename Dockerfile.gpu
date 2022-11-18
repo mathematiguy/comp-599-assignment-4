@@ -38,10 +38,10 @@ COPY requirements.txt /root/requirements.txt
 RUN pip3 install -r /root/requirements.txt
 
 # Install local package
-COPY a4 /code/a4
-COPY setup.py /code
-RUN python${PYTHON_VERSION} -m pip install -e /code
-ENV PYTHONPATH="/code:${PYTHONPATH}"
+COPY a4 /home/user/a4
+COPY setup.py /home/user
+RUN python${PYTHON_VERSION} -m pip install -e /home/user
+ENV PYTHONPATH="/home/user:${PYTHONPATH}"
 
 # Set env variables
 ENV HF_DATASETS_CACHE /home/user/.cache
