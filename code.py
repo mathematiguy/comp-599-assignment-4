@@ -271,7 +271,8 @@ def embed_passages(
 
 
 def embed_questions(titles, bodies, model, tokenizer, device="cpu", max_length=512):
-    tokens = tokenizer(titles, bodies, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
+    questions = [f'{title} [SEP] {body}' for title, body in zip(titles, bodies)]
+    tokens = tokenizer(questions, return_tensors="pt", padding='max_length', max_length=max_length, truncation=True, return_token_type_ids=True)
     return get_class_output(model, tokens)
 
 
