@@ -243,10 +243,11 @@ def inbatch_negative_sampling(Q: Tensor, P: Tensor, device: str = "cpu") -> Tens
     return S
 
 
-
 def contrastive_loss_criterion(S: Tensor, labels: Tensor = None, device: str = "cpu"):
+    if labels is None:
+        labels = torch.arange(S_scores.shape[0])
     S_scores = F.log_softmax(S, dim=1)
-    return F.nll_loss(S_scores, torch.arange(S_scores.shape[0]))
+    return F.nll_loss(S_scores, labels)
 
 
 def get_topk_indices(Q, P, k: int = None):
