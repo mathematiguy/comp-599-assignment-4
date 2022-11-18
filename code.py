@@ -251,10 +251,10 @@ def contrastive_loss_criterion(S: Tensor, labels: Tensor = None, device: str = "
 
 
 def get_topk_indices(Q, P, k: int = None):
-    # TODO: your work below
-    pass
-
-    # return indices, scores
+    if k is None:
+        k = Q.shape[0]
+    sim = torch.matmul(Q, P.t())
+    return torch.topk(sim, k)
 
 
 def select_by_indices(indices: Tensor, passages: "list[str]") -> "list[str]":
