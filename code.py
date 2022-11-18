@@ -254,7 +254,8 @@ def get_topk_indices(Q, P, k: int = None):
     if k is None:
         k = Q.shape[0]
     sim = torch.matmul(Q, P.t())
-    return torch.topk(sim, k)
+    scores, indices = torch.topk(sim, k)
+    return indices, scores
 
 
 def select_by_indices(indices: Tensor, passages: "list[str]") -> "list[str]":
